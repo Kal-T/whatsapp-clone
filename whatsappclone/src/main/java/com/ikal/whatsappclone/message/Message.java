@@ -1,5 +1,6 @@
 package com.ikal.whatsappclone.message;
 
+import com.ikal.whatsappclone.chat.Chat;
 import com.ikal.whatsappclone.common.BaseAuditingEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "messages")
+@NamedQuery(name = MessageConstants.FIND_MESSAGES_BY_CHAT_ID,
+        query = "SELECT m FROM Message m WHERE m.chat.id = :chatId ORDER BY m.createdDate"
+)
+@NamedQuery(name = MessageConstants.SET_MESSAGES_TO_SEEN_BY_CHAT,
+        query = "UPDATE Message SET state = :newState WHERE chat.id = :chatId"
+)
 public class Message extends BaseAuditingEntity {
 
     @Id
@@ -28,6 +35,8 @@ public class Message extends BaseAuditingEntity {
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
+
+    private Chat chat;
 
     @Column(name = "sender_id",nullable = false)
     private String senderId;
