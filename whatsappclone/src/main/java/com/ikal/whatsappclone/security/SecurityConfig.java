@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -28,7 +27,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers(
+                                .requestMatchers("/auth/**",
                                         "/v2/api-docs",
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",
@@ -45,8 +44,7 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(auth ->
                         auth.jwt(token ->
-                                token.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())
-                ));
+                                token.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())));
         return http.build();
     }
 
