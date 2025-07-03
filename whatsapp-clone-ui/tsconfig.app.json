@@ -9,6 +9,9 @@
   "include": [
     "src/**/*.ts"
   ],
+  "files": [
+    "src/window-global-fix.ts"
+  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]
